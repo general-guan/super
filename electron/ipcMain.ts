@@ -1,7 +1,8 @@
 import { ipcMain } from "electron";
-import { openTranslate } from "./openTranslate";
+import { createBrowserWindowFn } from "./utils";
+
 export const ipcMainInit = () => {
-  ipcMain.on("openTranslate", () => {
-    openTranslate();
+  ipcMain.on("createBrowserWindow", (_, config) => {
+    createBrowserWindowFn(config);
   });
 };

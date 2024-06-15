@@ -1,1 +1,7 @@
-@import '@unocss/reset/tailwind.css';
+@import "@unocss/reset/tailwind.css";
+
+html,
+body,
+#app {
+  height: 100%;
+}
