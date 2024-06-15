@@ -1,18 +1,18 @@
 import { BrowserWindow } from "electron";
 import { menuInit } from "./menu";
 import path from "path";
-const mainWindowMap = new Map();
-
+const browserWindowMap = new Map();
+export let mainWindow;
 export const createBrowserWindowFn = ({
   width = 1440,
   height = 800,
   hash = "/",
   webviewTag = false,
 } = {}) => {
-  if (mainWindowMap.has(hash)) {
-    mainWindowMap.get(hash).show();
+  if (browserWindowMap.has(hash)) {
+    browserWindowMap.get(hash).show();
   } else {
-    const mainWindow = new BrowserWindow({
+    const browserWindow = new BrowserWindow({
       width,
       height,
       webPreferences: {
@@ -22,21 +22,24 @@ export const createBrowserWindowFn = ({
       },
       show: false,
     });
-    mainWindow.on("ready-to-show", () => {
-      mainWindow.show();
+    browserWindow.on("ready-to-show", () => {
+      browserWindow.show();
     });
-    menuInit(mainWindow);
+    menuInit(browserWindow);
     if (process.env.NODE_ENV === "development") {
-      mainWindow.loadURL(process.env["VITE_DEV_SERVER_URL"]! + "#" + hash);
+      browserWindow.loadURL(process.env["VITE_DEV_SERVER_URL"]! + "#" + hash);
     } else {
-      mainWindow.loadFile(path.join(__dirname, "../dist/index.html"), {
+      browserWindow.loadFile(path.join(__dirname, "../dist/index.html"), {
         hash,
       });
     }
-    mainWindowMap.set(hash, mainWindow);
-    mainWindow.on("close", (e) => {
+    browserWindowMap.set(hash, browserWindow);
+    if (hash === "/") {
+      mainWindow = browserWindow;
+    }
+    browserWindow.on("close", (e) => {
       e.preventDefault();
-      mainWindow.hide();
+      browserWindow.hide();
     });
   }
 };

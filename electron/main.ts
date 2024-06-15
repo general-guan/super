@@ -3,9 +3,11 @@
 import { app } from "electron";
 import { ipcMainInit } from "./ipcMain";
 import { createBrowserWindowFn } from "./utils";
+import { trayInit } from "./tray";
 
 const init = () => {
   createBrowserWindowFn();
+  trayInit();
 };
 
 //在Electron完成初始化时被触发
