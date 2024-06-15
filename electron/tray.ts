@@ -2,7 +2,13 @@ import { app, Tray, Menu, nativeImage } from "electron";
 import path from "path";
 import { mainWindow } from "./utils";
 export const trayInit = () => {
-  const iconLocation = path.join(__dirname, "../src/assets/icon.png");
+  let iconLocation;
+
+  if (process.env.NODE_ENV === "development") {
+    iconLocation = path.join(__dirname, "../public/icon.png");
+  } else {
+    iconLocation = path.join(__dirname, "../dist/icon.png");
+  }
   const icon = nativeImage.createFromPath(iconLocation);
   const tray = new Tray(icon);
 
