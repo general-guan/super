@@ -25,3 +25,6 @@ dist-ssr
 
 dist-electron
 release
+
+auto-imports.d.ts
+components.d.ts
